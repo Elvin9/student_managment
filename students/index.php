@@ -1,5 +1,22 @@
+<?php
+session_start();
+require "../config/db.php";
+
+if(!isset($_SESSION['user_id'])){
+    header("Location: auth/login.php");
+    exit();
+}
+
+$sql = "SELECT * FROM students ORDER BY id DESC";
+$data = $conn->prepare($sql);
+$data->execute();
+$students = $data->fetchAll();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,7 +89,8 @@
             color: white;
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #eee;
@@ -94,7 +112,7 @@
                 align-items: flex-start;
                 gap: 15px;
             }
-            
+
             .table-container {
                 padding: 10px;
                 overflow-x: auto;
@@ -102,44 +120,40 @@
         }
     </style>
 </head>
+
 <body>
-<div class="table-container">
-    <div class="header-section">
-        <h2>Student Enrollment List</h2>
-        <a href="create.php" class="btn-add">+ Add Student</a>
+    <div class="table-container">
+        <div class="header-section">
+            <h2>Student Enrollment List</h2>
+            <a href="create.php" class="btn-add">+ Add Student</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Age</th>
+                    <th>Class</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($students as $item): ?>
+                <tr>
+                    <td><?= $item['full_name'] ?></td>
+                    <td><?= $item['age'] ?></td>
+                    <td><?= $item['class_name'] ?></td>
+                    <td><?= $item['phone'] ?></td>
+                    <td><?= $item['adress'] ?></td>
+                    <td><?= date("d.M.Y", strtotime($item['created_at'])) ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Full Name</th>
-                <th>Age</th>
-                <th>Class</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Alex Johnson</td>
-                <td>16</td>
-                <td>Grade 10-A</td>
-                <td>(555) 123-4567</td>
-                <td>123 Maple St, Springfield</td>
-                <td>2026-03-15</td>
-            </tr>
-            <tr>
-                <td>Maria Garcia</td>
-                <td>15</td>
-                <td>Grade 9-B</td>
-                <td>(555) 987-6543</td>
-                <td>456 Oak Ave, Riverdale</td>
-                <td>2026-03-18</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
 </body>
+
 </html>
