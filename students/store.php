@@ -20,7 +20,7 @@ $sql = "INSERT INTO students (full_name, age, phone, class_name, adress)
 
 $data = $conn->prepare($sql);
 
-$data->execute([$full_name, $age, $phone, $class_name, $adress]);
+$data->execute([$full_name, $age, $phone, $class, $adress]);
 header("Location: index.php");
 exit();
 

@@ -11,6 +11,7 @@ $sql = "SELECT * FROM students ORDER BY id DESC";
 $data = $conn->prepare($sql);
 $data->execute();
 $students = $data->fetchAll();
+$cnt = 1
 ?>
 
 
@@ -131,23 +132,29 @@ $students = $data->fetchAll();
         <table>
             <thead>
                 <tr>
+                    <th>Pupils</th>
                     <th>Full Name</th>
                     <th>Age</th>
                     <th>Class</th>
                     <th>Phone</th>
                     <th>Address</th>
                     <th>Created At</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach($students as $item): ?>
                 <tr>
+                    <td><?= $cnt++ ?></td>
                     <td><?= $item['full_name'] ?></td>
                     <td><?= $item['age'] ?></td>
                     <td><?= $item['class_name'] ?></td>
                     <td><?= $item['phone'] ?></td>
                     <td><?= $item['adress'] ?></td>
                     <td><?= date("d.M.Y", strtotime($item['created_at'])) ?></td>
+                    <td>   <a style="color: green; text-box-edge: #4a90e2;" href="View">View</a>
+                    <a href="edit.php?id=<?= $item['id'] ?> ">Edit</a>
+                    <a href="delete.php?id=<?= $item['id'] ?>" class="delete" onclick="return confirm('Do you really wanna delete this student')" >Delete</a> </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
