@@ -152,7 +152,7 @@ $cnt = 1
                     <td><?= $item['phone'] ?></td>
                     <td><?= $item['adress'] ?></td>
                     <td><?= date("d.M.Y", strtotime($item['created_at'])) ?></td>
-                    <td>   <a style="color: green; text-box-edge: #4a90e2;" href="View">View</a>
+                    <td>   <a style="color: green; text-box-edge: #4a90e2;" href="show.php?id=<?= $item['id'] ?>">View</a>
                     <a href="edit.php?id=<?= $item['id'] ?> ">Edit</a>
                     <a href="delete.php?id=<?= $item['id'] ?>" class="delete" onclick="return confirm('Do you really wanna delete this student')" >Delete</a> </td>
                 </tr>
