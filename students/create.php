@@ -1,3 +1,22 @@
+<?php
+session_start();
+require "../config/db.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: auth/login.php");
+    exit();
+}
+
+$sql = "SELECT * FROM classes ORDER BY id DESC";
+$data = $conn->prepare($sql);
+$data->execute();
+$classes = $data->fetchAll();
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,8 +145,13 @@
                     <input type="number" id="age" name="age" min="1" max="100" placeholder="18" required>
                 </div>
                 <div class="form-group">
-                    <label for="class">Class</label>
-                    <input type="text" id="class" name="class" placeholder="e.g. 10-A" required>
+                    <label>Select Class</label>
+                <select required name="class_id">
+                    <option value="">Select class</option>
+                    <?php foreach ($classes as $item): ?>
+                        <option value="<?= $item['id'] ?>"><?= $item['class_name'] ?></option>
+                    <?php endforeach ?>
+                </select>
                 </div>
             </div>
 

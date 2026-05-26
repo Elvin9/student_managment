@@ -17,6 +17,10 @@ if(!$student){
     echo "student is not found!";
     exit();
 }
+$sql = "SELECT * FROM classes ORDER BY id DESC";
+$data = $conn->prepare($sql);
+$data->execute();
+$classes = $data->fetchAll();
 
 
 ?>
@@ -148,8 +152,14 @@ if(!$student){
                     <input type="number" id="age" name="age" value="<?= $student['age'] ?>" min="1" required>
                 </div>
                 <div class="form-group">
-                    <label for="class">Class</label>
-                    <input type="text" id="class" name="class" value="<?= $student['class_name'] ?>" required>
+                     <label>Select Teacher</label>
+            <select required name="teacher_id">
+
+                <?php foreach ($classes as $item): ?>
+                    <option value="<?= $item['id'] ?>" <?= ($student['class_id'] == $item['id']) ? "selected" : "" ?> ><?= $item['class_name'] ?></option>
+                 <?php endforeach ?>
+            </select>
+           
                 </div>
             </div>
 

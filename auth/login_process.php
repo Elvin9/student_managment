@@ -12,7 +12,7 @@ $user = $data->fetch();
 if($user){
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['username'] = $user['username'];
-header("Location: ../dashboard.php");
+header("Location: ../index.php");
 
 } else {
     header("Location: login.php?error=1 ");

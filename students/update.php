@@ -12,12 +12,12 @@ var_dump($_POST);
 $id= $_POST['id'];
 $full_name = $_POST['full_name'];
 $age = $_POST['age'];
-$phone = $_POST['phone'];
 $address = $_POST['address'];
 $class = $_POST['class'];
+$phone = $_POST['phone'];
 
 $sql = "UPDATE students
-    SET full_name =?, age = ?, adress = ?, class_name = ?, phone = ?
+    SET full_name =?, age = ?, adress = ?, class_id = ?, phone = ?
     WHERE id = ? ";
 $data = $conn->prepare($sql);
 $data->execute([$full_name, $age,  $address, $class, $phone, $id]);

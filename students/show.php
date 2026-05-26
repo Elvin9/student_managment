@@ -10,10 +10,13 @@ if(!isset($_SESSION['user_id'])){
 
 
 $id = $_GET['id'];
-$sql = "SELECT * FROM students WHERE id = ?";
+$sql = "SELECT * FROM students s JOIN classes c on s.class_id = c.id WHERE s.id = ?";
 $data = $conn->prepare($sql);
 $data->execute([$id]);
 $student = $data->fetch();
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -96,9 +99,10 @@ $student = $data->fetch();
                 <td><?= $student['id'] ?></td>
                 <td><?= $student['full_name'] ?></td>
                 <td><?= $student['age'] ?></td>
+                <td><?= $student['class_name'] ?></td>
                 <td><?= $student['phone'] ?></td>
                 <td><?= $student['adress'] ?></td>
-                <td><?= $student['class_name'] ?></td>
+                
             </tr>
         </tbody>
     </table>

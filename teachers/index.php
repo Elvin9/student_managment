@@ -7,13 +7,10 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$sql = "SELECT s.id, s.full_name, s.age, s.phone, s.adress, c.class_name, s.created_at 
-        FROM students s 
-        JOIN classes c ON s.class_id = c.id";
-
+$sql = "SELECT * FROM teachers ORDER BY id DESC";
 $data = $conn->prepare($sql);
 $data->execute();
-$students = $data->fetchAll();
+$teachers = $data->fetchAll();
 
 $cnt = 1;
 ?>
@@ -24,7 +21,7 @@ $cnt = 1;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students</title>
+    <title>Teachers List</title>
 
     <style>
         * {
@@ -42,45 +39,47 @@ $cnt = 1;
         /* PAGE CONTENT */
         .page-content {
             width: 100%;
-            padding: 40px;
-            margin-top: 20px;
+            padding: 35px;
+            margin-top: 10px;
         }
 
-        /* TABLE CONTAINER */
-        .table-container {
+        /* CONTAINER */
+        .container {
             width: 100%;
             background: white;
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
         }
 
         /* HEADER */
-        .header-section {
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
         }
 
-        .header-section h2 {
+        .header h2 {
             font-size: 30px;
             color: #2d3436;
             font-weight: 700;
         }
 
         /* ADD BUTTON */
-        .btn-add {
+        .add-btn {
+            text-decoration: none;
             background: linear-gradient(135deg, #43e97b, #38f9d7);
             color: white;
-            text-decoration: none;
             padding: 12px 22px;
             border-radius: 12px;
             font-weight: bold;
             transition: 0.3s;
+            display: inline-block;
         }
 
-        .btn-add:hover {
+        .add-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(67, 233, 123, 0.3);
         }
@@ -89,8 +88,8 @@ $cnt = 1;
         table {
             width: 100%;
             border-collapse: collapse;
+            border-radius: 15px;
             overflow: hidden;
-            border-radius: 14px;
         }
 
         /* TABLE HEADER */
@@ -103,6 +102,7 @@ $cnt = 1;
             padding: 18px;
             text-align: left;
             font-size: 15px;
+            white-space: nowrap;
         }
 
         /* TABLE BODY */
@@ -110,6 +110,7 @@ $cnt = 1;
             padding: 16px;
             border-bottom: 1px solid #edf2f7;
             color: #444;
+            white-space: nowrap;
         }
 
         tbody tr {
@@ -120,7 +121,7 @@ $cnt = 1;
             background: #f7fbff;
         }
 
-        /* ACTION BUTTONS */
+        /* ACTIONS */
         .actions {
             display: flex;
             gap: 10px;
@@ -136,6 +137,10 @@ $cnt = 1;
             transition: 0.3s;
         }
 
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
         .view-btn {
             background: #3498db;
         }
@@ -148,10 +153,6 @@ $cnt = 1;
             background: #e74c3c;
         }
 
-        .btn:hover {
-            transform: scale(1.05);
-        }
-
         /* RESPONSIVE */
         @media (max-width: 900px) {
 
@@ -159,17 +160,15 @@ $cnt = 1;
                 padding: 15px;
             }
 
-            .table-container {
-                overflow-x: auto;
+            .container {
                 padding: 20px;
             }
 
-            .header-section {
+            .header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
             }
-
         }
     </style>
 </head>
@@ -180,13 +179,13 @@ $cnt = 1;
 
     <div class="page-content">
 
-        <div class="table-container">
+        <div class="container">
 
-            <div class="header-section">
-                <h2>Student Enrollment List</h2>
+            <div class="header">
+                <h2>Teachers List</h2>
 
-                <a href="create.php" class="btn-add">
-                    + Add Student
+                <a href="create.php" class="add-btn">
+                    + Add Teacher
                 </a>
             </div>
 
@@ -194,36 +193,36 @@ $cnt = 1;
 
                 <thead>
                     <tr>
-                        <th>Pupils</th>
-                        <th>Full Name</th>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Age</th>
-                        <th>Class</th>
                         <th>Phone</th>
-                        <th>Address</th>
-                        <th>Created At</th>
+                        <th>Subject</th>
+                        <th>Experience</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
-                    <?php foreach ($students as $item): ?>
+                    <?php foreach ($teachers as $item): ?>
 
                         <tr>
 
                             <td><?= $cnt++ ?></td>
 
-                            <td><?= $item['full_name'] ?></td>
+                            <td><?= $item['first_name'] ?></td>
+
+                            <td><?= $item['last_name'] ?></td>
 
                             <td><?= $item['age'] ?></td>
 
-                            <td><?= $item['class_name'] ?></td>
-
                             <td><?= $item['phone'] ?></td>
 
-                            <td><?= $item['adress'] ?></td>
+                            <td><?= $item['subject'] ?></td>
 
-                            <td><?= date("d.M.Y", strtotime($item['created_at'])) ?></td>
+                            <td><?= $item['experience'] ?></td>
 
                             <td class="actions">
 
@@ -237,7 +236,7 @@ $cnt = 1;
 
                                 <a href="delete.php?id=<?= $item['id'] ?>"
                                     class="btn delete-btn"
-                                    onclick="return confirm('Do you really wanna delete this student?')">
+                                    onclick="return confirm('Do you really wanna delete this teacher?')">
 
                                     Delete
 

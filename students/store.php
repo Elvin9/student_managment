@@ -9,12 +9,12 @@ if(!isset($_SESSION['user_id'])){
 
 $full_name = $_POST['full_name'];
 $age = $_POST['age'];
-$class = $_POST['class'];
+$class = $_POST['class_id'];
 $phone = $_POST['phone'];
 $adress = $_POST['address'];
 
 
-$sql = "INSERT INTO students (full_name, age, phone, class_name, adress)
+$sql = "INSERT INTO students (full_name, age, phone, class_id, adress)
     VALUES(?, ?, ?, ?, ?)";
 
 
